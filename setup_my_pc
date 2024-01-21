@@ -36,6 +36,27 @@ ensure_installed () {
     fi
 }
 
+ensure_vim_code_dark_theme () {
+    local THEMES_DIR="${HOME}/.vim/pack/themes/start"
+
+    if [[ ! -d "${THEMES_DIR}" ]]; then
+        echo_yellow "Creating vim themes dir .. "
+        mkdir -p "${THEMES_DIR}"
+    else
+        echo_green "Vim themes dir already created."
+    fi 
+
+    if [[ ! -d "${THEMES_DIR}/vim-code-dark" ]]; then
+        echo_yellow "Installing vim-code-dark .. "
+        cd "${THEMES_DIR}"
+        git clone https://github.com/tomasiser/vim-code-dark
+        rm -rf ./vim-code-daerk/.git
+        cd -
+    else
+        echo_green "vim-code-dark already installed."
+    fi
+}
+
 ensure_elvish_installed () {
     if ! $(which elvish > /dev/null); then
 	local TMPDIR="$(mktemp -d)"
@@ -92,6 +113,7 @@ ensure_gcm_installed () {
 
 ensure_installed wget
 ensure_installed vim
+ensure_vim_code_dark_theme
 ensure_installed git
 ensure_gcm_installed
 ensure_elvish_installed
