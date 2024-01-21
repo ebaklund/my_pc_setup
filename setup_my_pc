@@ -82,6 +82,7 @@ ensure_gcm_installed () {
         echo "" >> ~/.profile
         echo "# Configure store for Git Credential Manager" >> ~/.profile
         echo "export GCM_CREDENTIAL_STORE=cache" >> ~/.profile
+        echo_yellow "New loging required for GCM configuration to take effect!"
     else
         echo_green "gcm store lready configured."
     fi
