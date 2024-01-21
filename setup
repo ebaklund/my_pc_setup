@@ -1,0 +1,60 @@
+#!/usr/bin/env -S bash
+
+SRC_DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+ARGS="$@"
+
+# HELPERS
+
+echo_red () {
+    echo -e "\033[31m $1\033[0m"
+}
+
+echo_green () {
+    echo -e "\033[32m $1\033[0m"
+}
+
+echo_blue () {
+    echo -e "\033[34m $1\033[0m"
+}
+
+echo_yellow () {
+    echo -e "\033[33m $1\033[0m"
+}
+
+ensure_installed () {
+    if ! $(which $1 > /dev/null); then
+        echo_yellow "Installing $1 .. "
+        sudo apt-get install -y $1
+    else
+        echo_green "$1 already installed."
+    fi
+}
+
+ensure_elvish_installed () {
+    if ! $(which elvish > /dev/null); then
+	local TMPDIR="$(mktemp -d)"
+        local FILE="elvish-v0.19.2"
+
+        echo_yellow "Installing elvish .. "
+        cd "${TMPDIR}"
+
+	wget "https://dl.elv.sh/linux-amd64/${FILE}.tar.gz"
+        tar xvf "${FILE}.tar.gz"
+        chmod +x "${FILE}"
+        sudo cp "${FILE}" "/usr/local/bin/elvish"
+
+        cd -
+        rm -rf "${TMPDIR}"
+    else
+        echo_green "elvish already installed."
+    fi
+}
+
+# MAIN
+
+ensure_installed wget
+ensure_installed vim
+ensure_installed git
+ensure_elvish_installed
+ensure_installed koko
+
