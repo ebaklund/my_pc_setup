@@ -75,6 +75,16 @@ ensure_gcm_installed () {
     else
         echo_green "gcm already installed."
     fi
+
+    if ! grep GCM_CREDENTIAL_STORE ~/.profile > /dev/null; then
+        echo_yellow "Cunfiguring gcm store .. "
+        cp ~/.profile ~/.profile.$(date +"%Y%m%d-%H%M")
+        echo "" >> ~/.profile
+        echo "# Configure store for Git Credential Manager" >> ~/.profile
+        echo "export GCM_CREDENTIAL_STORE=cache" >> ~/.profile
+    else
+        echo_green "gcm store lready configured."
+    fi
 }
 
 # MAIN
